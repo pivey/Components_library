@@ -1,5 +1,5 @@
 import React, { useReducer } from 'react';
-import { login } from './utils';
+import { login } from '../utils';
 
 function loginReducer(state, action) {
     switch (action.type) {

@@ -1,40 +1,48 @@
 import React, { useReducer } from 'react';
-import produce from 'immer';
-// import { useImmerReducer } from 'use-immer';
-import { login } from './utils';
+import { login } from '../utils';
 
-function loginReducer(draft, action) {
+function loginReducer(state, action) {
     switch (action.type) {
         case 'field': {
-            draft[action.fieldName] = action.payload;
-            return;
+            return {
+                ...state,
+                [action.fieldName]: action.payload,
+            };
         }
         case 'login': {
-            draft.error = '';
-            draft.isLoading = true;
-            return;
+            return {
+                ...state,
+                error: '',
+                isLoading: true,
+            };
         }
         case 'success': {
-            draft.isLoggedIn = true;
-            draft.isLoading = false;
-            draft.username = '';
-            draft.password = '';
-            return;
+            return {
+                ...state,
+                isLoggedIn: true,
+                isLoading: false,
+                username: '',
+                password: '',
+            };
         }
         case 'error': {
-            draft.error = 'Incorrect username or password!';
-            draft.isLoggedIn = false;
-            draft.isLoading = false;
-            draft.username = '';
-            draft.password = '';
-            return;
+            return {
+                ...state,
+                error: 'Incorrect username or password!',
+                isLoggedIn: false,
+                isLoading: false,
+                username: '',
+                password: '',
+            };
         }
         case 'logOut': {
-            draft.isLoggedIn = false;
-            return;
+            return {
+                ...state,
+                isLoggedIn: false,
+            };
         }
         default:
-            return;
+            return state;
     }
 }
 
@@ -46,17 +54,8 @@ const initialState = {
     isLoggedIn: false,
 };
 
-const curriedLoginReducer = produce(loginReducer);
-
-// const curriedLoginReducerFake = (state, ...args) => {
-//   return produce(state, (draft) => {
-//     loginReducer(state, ...args);
-//   })
-// }
-
-export default function LoginUseState() {
-    const [state, dispatch] = useReducer(curriedLoginReducer, initialState);
-    // const [state, dispatch] = useImmerReducer(loginReducer, initialState);
+export default function LoginUseReducer() {
+    const [state, dispatch] = useReducer(loginReducer, initialState);
     const { username, password, isLoading, error, isLoggedIn } = state;
 
     const onSubmit = async e => {

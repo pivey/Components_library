@@ -1,0 +1,20 @@
+1. multiline cursors : option + CMD + up / down
+2. switch windows left / right: CTRL + left / right
+3. move cursor to end of the line: CMD + left / right
+4. select word occurrences: CMD + D
+5. open / close terminal: CMD + J
+6. open / close dock: CMD + B
+7. quick highlight whole line: CMD + left / right
+8. jump between words: option + left / right
+9. jump highlight words: option + shift + left / right
+10. open search: CMD + shift + F
+11. open file explorer: CMD + shift + E
+12. open command palette: CMD + shift + P
+
+Command palette shortcuts
+
+1. get full or relative path of active file you are working on
+: CMD + shift + P + type 'path'
+2. jump to a specific line: type ':' + a number 
+3. file explorer mode: delete the carrot
+4: return to command palette: type '>'
