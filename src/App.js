@@ -1,26 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
+// import styled from 'styled-components';
 import './styles/App.css';
 import './styles/base.css';
 import LoginUseReducer from './components/LoginUseReducer';
 import LoginUseReducerImmer from './components/LoginUseReducerImmer';
-import StyledInputs from './components/StyledInputs';
+import FocusEffectInput from './components/FocusEffectInput';
+import DynamicForm from './components/DynamicForm';
 
 
-const PopUpBtn = styled.button`
-  height:auto;
-  width:auto;
-  color:white;
-  background:green; 
-  font-size:1.2rem;
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%, 0);
-  font-weight:bold;
-  &:focus {
-        outline: 0;
-    }
-`;
+// const PopUpBtn = styled.button`
+//   height:auto;
+//   width:auto;
+//   color:white;
+//   background:green; 
+//   font-size:1.2rem;
+//   position: absolute;
+//   left: 50%;
+//   transform: translate(-50%, 0);
+//   font-weight:bold;
+//   &:focus {
+//         outline: 0;
+//     }
+// `;
 
 const useLocationHash  = () => {
   const [hash, setHash] = useState(window.location.hash);
@@ -45,18 +46,18 @@ const useSimpleHashRouter = (routes) => {
 }
 
 function App() {
-    const [popUp, setPopUp] = useState({
-      open: false,
-      title: 'User deleted',
-      text: 'the user with the name of: John was successfully deleted'
-    });
-    const [accept, setAccept] = useState(false)
+    // const [popUp, setPopUp] = useState({
+    //   open: false,
+    //   title: 'User deleted',
+    //   text: 'the user with the name of: John was successfully deleted'
+    // });
+    // const [accept, setAccept] = useState(false)
 
-    console.log(popUp);
   const CurrentRoute = useSimpleHashRouter({
     useReducer: LoginUseReducer,
     useReducerImmer: LoginUseReducerImmer,
-    styledInputs: StyledInputs,
+    FocusEffectInput: FocusEffectInput,
+    DynamicForm: DynamicForm,
   });
 
   return (
@@ -70,10 +71,14 @@ function App() {
           <a href="#useReducerImmer">useReducerImmer</a>
           <br />
           <br />
-          <a href="#styledInputs">styledInputs</a>
+          <a href="#FocusEffectInput">FocusEffectInput</a>
+          <br />
+          <br />
+          <a href="#DynamicForm">DynamicForm</a>
         </div>
         </>
       )}
+      {/* {CurrentRoute === FocusEffectInput && <CurrentRoute labelName="chickenwings" />} */}
       {CurrentRoute && <CurrentRoute />}
     </>
   );

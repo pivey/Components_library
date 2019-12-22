@@ -68,6 +68,13 @@ html {
   outline: none;
 }
 
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: auto;
+  margin: 0;
+}
+
 /* normal css for input animation */
 
 .pageWrapper {
@@ -144,3 +151,14 @@ html {
 .form input:valid + .label-name::after {
   transform: translateX(0%);
 }
+
+/* *********  html for the active effect input  *********** */
+/* <div className="pageWrapper">
+                <h1 className="title">Animation Input</h1>
+                <div className="form">
+                    <input type="text" name="name" autoComplete="off" required/>
+                        <label className="label-name">
+                            <span className="content-name">Name</span>
+                        </label>
+                </div>
+            </div> */

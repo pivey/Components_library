@@ -82,7 +82,7 @@ const FormDiv = styled.div`
     }
 `;
 
-const StyledInputs = () => {
+const FocusEffectInput = ({labelName}) => {
     return (
             <>
             <PageWrapper>
@@ -90,22 +90,13 @@ const StyledInputs = () => {
                     <FormDiv> 
                         <FormInput type="text" name="name" autoCapitalize autoComplete="off" required></FormInput>
                         <InputLabel for="name">
-                            <LabelContent>Name</LabelContent>
+                        <LabelContent>{labelName || 'Name'}</LabelContent>
                         </InputLabel>
                     </FormDiv>
             </PageWrapper>
-            {/* <div className="pageWrapper">
-                <h1 className="title">Animation Input</h1>
-                <div className="form">
-                    <input type="text" name="name" autoComplete="off" required/>
-                        <label className="label-name">
-                            <span className="content-name">Name</span>
-                        </label>
-                </div>
-            </div> */}
             </>
         
     );
 };
 
-export default StyledInputs;
+export default FocusEffectInput;
