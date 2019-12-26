@@ -113,10 +113,10 @@ const FormSubmitBtn = styled.button`
 `;
 
 const LoggedInMessage = styled.div`
-    max-width:40%;
+    max-width:50%;
     height:auto;
     text-align:center; 
-    font-size:2.5rem;
+    font-size:2rem;
     border:2px solid green;
     background:white;
     color:green;
@@ -287,7 +287,7 @@ const DynamicForm = () => {
                             type="text" //
                             id="name" //
                             name="name" //
-                            autoComplete="false" //
+                            autoComplete="off" //
                             placeholder="Monty" //
                             value={state.name}
                             ref={nameRef}
@@ -304,7 +304,7 @@ const DynamicForm = () => {
                             type="email" //
                             id="email" //
                             name="email" //
-                            autoComplete="false" // 
+                            autoComplete="off" // 
                             placeholder="joe@email.com" //
                             value={state.email}
                             ref={emailRef}
@@ -322,7 +322,7 @@ const DynamicForm = () => {
                             id="age" // 
                             name="age" //  
                             min="1" // 
-                            autoComplete="false" // 
+                            autoComplete="off" // 
                             placeholder="30" //
                             value={state.age}
                             ref={ageRef}
@@ -339,7 +339,7 @@ const DynamicForm = () => {
                             type="text" //
                             id="address" // 
                             name="address" // 
-                            autoComplete="false" // 
+                            autoComplete="off" // 
                             placeholder="32 allburns way" //
                             value={state.address}
                             ref={addressRef}

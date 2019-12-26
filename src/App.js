@@ -6,6 +6,7 @@ import LoginUseReducer from './components/LoginUseReducer';
 import LoginUseReducerImmer from './components/LoginUseReducerImmer';
 import FocusEffectInput from './components/FocusEffectInput';
 import DynamicForm from './components/DynamicForm';
+import FormPlaceHolder from './components/FormPlaceHolder';
 
 // const PopUpBtn = styled.button`
 //   height:auto;
@@ -57,6 +58,7 @@ function App() {
     useReducerImmer: LoginUseReducerImmer,
     FocusEffectInput: FocusEffectInput,
     DynamicForm: DynamicForm,
+    FormPlaceHolder: FormPlaceHolder,
   });
 
   return (
@@ -74,11 +76,14 @@ function App() {
           <br />
           <br />
           <a href="#DynamicForm">DynamicForm</a>
+          <br />
+          <br />
+          <a href="#FormPlaceHolder">FormPlaceHolder</a>
         </div>
         </>
       )}
       {CurrentRoute === FocusEffectInput && <CurrentRoute labelName="Name" />}
-      {/* {CurrentRoute && <CurrentRoute />} */}
+      {CurrentRoute && <CurrentRoute />}
     </>
   );
 }
