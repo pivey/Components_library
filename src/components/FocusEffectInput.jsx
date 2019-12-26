@@ -1,6 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 
+const controller = {
+    focusColor: 'green', 
+    initLabelSize: '1.6rem',
+    focusedLabelSize: '1.3rem',
+    inputFontSize: '1.5rem',
+}
+
 const PageWrapper = styled.div`
     height:100vh;
     width:100vw;
@@ -19,6 +26,16 @@ const Title = styled.div`
     text-align: center;
 `;
 
+const FormInput = styled.input`
+    width:100%;
+    height:100%;
+    color: ${({ focusColor }) => focusColor || controller.focusColor};
+    padding-top: 30px;
+    padding-left: 4px;
+    border:none;
+    font-size: ${({ inputFontSize }) => inputFontSize || controller.inputFontSize};;
+`;
+
 const LabelContent = styled.span`
     position:absolute; 
     bottom:5px;
@@ -26,28 +43,15 @@ const LabelContent = styled.span`
     transition: all 0.3s ease;
 `;
 
-const FormInput = styled.input`
-    width:100%;
-    height:100%;
-    color: green;
-    padding-top: 30px;
-    padding-left: 4px;
-    border:none;d
-    font-size: 1.5rem;
-    :focus  &${Title} {
-        border: 2px solid orange;
-    }
-`;
-
 const InputLabel = styled.label`
+width:100%;
+height:100%;
 position:absolute; 
 padding-left: 0px;
 padding-top: 2px;
-font-size: 1.6rem;
+font-size: ${({ initLabelSize }) => initLabelSize || controller.initLabelSize};;
 bottom:0px; 
 left:7px;
-width:100%;
-height:100%;
 pointer-events:none;
 border-bottom: 0.5px solid black;
 overflow: hidden;
@@ -56,7 +60,7 @@ overflow: hidden;
     position:absolute;
     height:100%;
     width:100%;
-    border-bottom: 2px solid green;
+    border-bottom: 1px solid ${({ focusColor }) => focusColor || controller.focusColor};;
     left:0px;
     bottom:0px;
     transform: translateX(-100%);
@@ -65,35 +69,56 @@ overflow: hidden;
 `;
 
 const FormDiv = styled.div`
-    font-size:16px;
     position: relative; 
     height: 50px;
-    width:50%;
-    :focus-within ${InputLabel} ${LabelContent}{
+    width:100%;
+    :focus-within ${InputLabel} ${LabelContent},
+    & ${FormInput}:valid ~ ${InputLabel} > ${LabelContent} {
         transform: translateY(-150%);
         border-bottom: none;
-        font-size: 1.4rem;
-        color: green;
+        font-size: ${({ focusedLabelSize }) => focusedLabelSize || controller.focusedLabelSize};;
+        color: ${({ focusColor }) => focusColor || controller.focusColor};;
     }
-    :focus-within ${InputLabel}::after {
+    :focus-within ${InputLabel}::after,
+    & ${FormInput}:valid ~ ${InputLabel}::after {
         transform: translateY(-0%);
-        font-size: 1.4rem;
-        color: green;
     }
 `;
 
-const FocusEffectInput = ({labelName}) => {
+const FormHolder = styled.div`
+    height:auto;
+    width:300px;
+    display:flex;
+`;
+
+const FocusEffectInput = ({ labelName, focusColor, initLabelSize, focusedLabelSize, inputFontSize}) => {
     return (
             <>
-            <PageWrapper>
-                <Title>Input Animation</Title>
-                    <FormDiv> 
-                        <FormInput type="text" name="name" autoCapitalize autoComplete="off" required></FormInput>
-                        <InputLabel for="name">
-                        <LabelContent>{labelName || 'Name'}</LabelContent>
-                        </InputLabel>
-                    </FormDiv>
-            </PageWrapper>
+                <PageWrapper>
+                    <Title>Input Animation</Title>
+                        <FormHolder>
+                            <FormDiv
+                            focusedLabelSize={focusedLabelSize}
+                            focusColor={focusColor}
+                            > 
+                                <FormInput 
+                                type="text" 
+                                name="name" 
+                                autoCapitalize 
+                                autoComplete="off" 
+                                required
+                                focusColor={focusColor}
+                                inputFontSize={inputFontSize}
+                                ></FormInput>
+                                <InputLabel 
+                                for="name"
+                                initLabelSize={initLabelSize}
+                                >
+                                    <LabelContent>{labelName || 'Name'}</LabelContent>
+                                </InputLabel>
+                            </FormDiv>
+                    </FormHolder>
+                </PageWrapper>
             </>
         
     );

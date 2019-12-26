@@ -7,7 +7,6 @@ import LoginUseReducerImmer from './components/LoginUseReducerImmer';
 import FocusEffectInput from './components/FocusEffectInput';
 import DynamicForm from './components/DynamicForm';
 
-
 // const PopUpBtn = styled.button`
 //   height:auto;
 //   width:auto;
@@ -78,8 +77,8 @@ function App() {
         </div>
         </>
       )}
-      {/* {CurrentRoute === FocusEffectInput && <CurrentRoute labelName="chickenwings" />} */}
-      {CurrentRoute && <CurrentRoute />}
+      {CurrentRoute === FocusEffectInput && <CurrentRoute labelName="Name" />}
+      {/* {CurrentRoute && <CurrentRoute />} */}
     </>
   );
 }

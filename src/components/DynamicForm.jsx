@@ -116,9 +116,14 @@ const LoggedInMessage = styled.div`
     max-width:40%;
     height:auto;
     text-align:center; 
-    font-size:2rem;
+    font-size:2.5rem;
+    border:2px solid green;
+    background:white;
     color:green;
     margin-top:2rem;
+    z-index:1000;
+    padding:1rem
+    visibility: ${({ visible }) => visible ? 'visible' : 'hidden'};
 `;
 
 const ButtonHolder = styled.div`
@@ -174,7 +179,7 @@ const initState = {
     email: '',
     age: '',
     address: '',
-    isLoggedIn: false,
+    isLoggedIn: false, 
 };
 
 const DynamicForm = () => {
@@ -237,7 +242,6 @@ const DynamicForm = () => {
 
     const validateInput = (inputValue, regex, ref) => {
         const tested = regex.test(inputValue);  
-        console.log(inputValue, regex, ref, tested, '***************');
         tested && ref.current.classList.add('valid')
         !tested && ref.current.classList.add('invalid')
     }
@@ -283,15 +287,12 @@ const DynamicForm = () => {
                             type="text" //
                             id="name" //
                             name="name" //
-                            autoComplete="off" //
+                            autoComplete="false" //
                             placeholder="Monty" //
                             value={state.name}
                             ref={nameRef}
                             onChange={(e) => {
                                 dispatch({ type: 'name', payload: e.target.value })
-                                setTimeout(() => {
-                                    validateInput(state.name, inputFields.name, nameRef);
-                                }, 200)      
                             }}
                             onBlur={() => validateInput(state.name, inputFields.name, nameRef)}
                         />
@@ -303,15 +304,12 @@ const DynamicForm = () => {
                             type="email" //
                             id="email" //
                             name="email" //
-                            autoComplete="off" // 
+                            autoComplete="false" // 
                             placeholder="joe@email.com" //
                             value={state.email}
                             ref={emailRef}
                             onChange={(e) => {
                                 dispatch({ type: 'email', payload: e.target.value })
-                                setTimeout(() => {
-                                    validateInput(state.email, inputFields.email, emailRef);
-                                }, 200)
                             }}
                             onBlur={() => validateInput(state.email, inputFields.email, emailRef)}
                         />
@@ -324,15 +322,12 @@ const DynamicForm = () => {
                             id="age" // 
                             name="age" //  
                             min="1" // 
-                            autoComplete="off" // 
+                            autoComplete="false" // 
                             placeholder="30" //
                             value={state.age}
                             ref={ageRef}
                             onChange={(e) => {
                                 dispatch({ type: 'age', payload: e.target.value })
-                                setTimeout(() => {
-                                    validateInput(state.age, inputFields.age, ageRef);
-                                }, 200)
                             }}
                             onBlur={() => validateInput(state.age, inputFields.age, ageRef)}
                         />
@@ -344,15 +339,12 @@ const DynamicForm = () => {
                             type="text" //
                             id="address" // 
                             name="address" // 
-                            autoComplete="off" // 
+                            autoComplete="false" // 
                             placeholder="32 allburns way" //
                             value={state.address}
                             ref={addressRef}
                             onChange={(e) => {
                                 dispatch({ type: 'address', payload: e.target.value })
-                                setTimeout(() => {
-                                    validateInput(state.address, inputFields.address, addressRef);
-                                }, 200)
                             }}
                             onBlur={() => validateInput(state.address, inputFields.address, addressRef)}
                             />
@@ -371,11 +363,7 @@ const DynamicForm = () => {
                     
                 </FormHolder>
             </FormMother>
-            {state.isLoggedIn && (
-                <LoggedInMessage>{`welcome ${state.name} you have successfully logged in`}</LoggedInMessage>
-            )
-            }
-            
+                <LoggedInMessage visible={state.isLoggedIn}>{`welcome ${state.name} you have successfully logged in`}</LoggedInMessage>
         </Modal>
         </>
     );
