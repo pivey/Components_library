@@ -88,8 +88,8 @@ const FormInput = styled.input`
         border:2px solid green;
     }
     &.invalid {
-        border:2px solid red;
         color:red;
+        border:2px solid red;
     }
     &.valid {
         color:green;
@@ -204,9 +204,9 @@ const DynamicForm = () => {
     const [currentRef, setCurrentRef] = useState(null);
 
     const inputFields = {
-        name: /^[a-z\d]{1,3}$/i,
-        email: /^([a-z\d\.-]+)@([a-z\d-]+)\.([a-z]{2,8})(\.[a-z]{2,8})?$/,
-        age: /^[0-9]{2,3}$/,
+        name: /^[a-z\d]{1,15}$/i,
+        email: /^([A-Za-z\d\.-]+)@([a-z\d-]+)\.([a-z]{2,8})(\.[a-z]{2,8})?$/,
+        age: /^[0-9]{1,2}$/,
         address: /^\d+\s[A-z]+\s[A-z]+/,
         // address: /\b\d{1,6} +.{2,25}\b(avenue|ave|court|ct|street|st|drive|dr|lane|ln|road|rd|blvd|plaza|parkway|pkwy)[.,]?(.{0,25} +\b\d{5}\b)?/ig,
     }
@@ -223,8 +223,11 @@ const DynamicForm = () => {
     }
 
     useEffect((e) => {
-        if (currentRef) currentRef.current.focus();
-    }, [currentRef, state])
+        if (currentRef) {
+            currentRef.current.focus();
+            currentRef.current.blur();
+        }
+    }, [currentRef, state.isLoggedIn])
 
     // const classReset = () => {
     //     refs.map(el => {
@@ -235,7 +238,7 @@ const DynamicForm = () => {
 
     const validateTestData = () => {
         // classReset();
-        const e = new Event('blur', { bubbles: true });
+        const e = new Event('input', { bubbles: true });
         let input = null;
         refs.map(x => {
             input = x.current;
@@ -249,15 +252,20 @@ const DynamicForm = () => {
         dispatch({ type: 'isLoggedIn', payload: true });
         setTimeout(() => {
             dispatch({ type: 'reset' }); 
-            // classReset();
             dispatch({ type: 'isLoggedIn', payload: false });
         }, 1000)
     }
 
     const validateInput = (inputValue, regex, ref) => {
         const tested = regex.test(inputValue);  
-        tested && ref.current.classList.add('valid')
-        !tested && ref.current.classList.add('invalid')
+        if (!tested) {
+            ref.current.classList.add('invalid');
+            ref.current.classList.remove('valid');
+        }
+        if (tested) {
+            ref.current.classList.add('valid');
+            ref.current.classList.remove('invalid');
+        } 
     }
 
     const insertCorrectInfo = () => {
@@ -269,7 +277,6 @@ const DynamicForm = () => {
         })
         setTimeout(() => validateTestData(), 0);        
     }
-
 
     const insertIncorrectInfo = () => {
         const values = ['???)()(&&', '(((%%%)))harry@gmail.com', Number(0), '42 flanders ==//&&%%']
@@ -337,80 +344,40 @@ const DynamicForm = () => {
                             labelName="Name *" 
                             stateValue={state.name}
                             {...controller}
-                            dataCollector={(e) => refReceiver(e)}
+                            refCollector={(e) => refReceiver(e)}
                             attributeSetter={(e) => attributeSetter(e)}
                             validation={() => validateInput(state.name, inputFields.name, currentRef)}
                         />
                     </LabelInputHolder>
-                        {/* <br></br> */}
                     <LabelInputHolder>
-                        {/* <InputLabel htmlFor="email">Email: </InputLabel>
-                            <FormInput 
-                            type="email" //
-                            autoComplete="off" // 
-                            placeholder="joe@email.com" //
-                            value={state.email}
-                            ref={emailRef}
-                            onChange={(e) => {
-                                dispatch({ type: 'email', payload: e.target.value })
-                            }}
-                            onBlur={() => validateInput(state.email, inputFields.email, emailRef)}
-                        /> */}
                         <FocusEffectInput
                             stateName='email'
                             labelName="Email *"
                             stateValue={state.email}
                             {...controller} 
-                            dataCollector={(e) => refReceiver(e)}
+                            refCollector={(e) => refReceiver(e)}
                             attributeSetter={(e) => attributeSetter(e)}
                             validation={() => validateInput(state.email, inputFields.email, currentRef)}
                         />
                     </LabelInputHolder>
-                        {/* <br></br> */}
                     <LabelInputHolder>
-                        {/* <InputLabel htmlFor="age">Age: </InputLabel>
-                            <FormInput 
-                            type="number" //
-                            min="1" // 
-                            autoComplete="off" // 
-                            placeholder="30" //
-                            value={state.age}
-                            ref={ageRef}
-                            onChange={(e) => {
-                                dispatch({ type: 'age', payload: e.target.value })
-                            }}
-                            onBlur={() => validateInput(state.age, inputFields.age, ageRef)}
-                        /> */}
                         <FocusEffectInput 
                             stateName='age'
                             labelName="Age *" 
                             stateValue={state.age}
                             {...controller} 
-                            dataCollector={(e) => refReceiver(e)}
+                            refCollector={(e) => refReceiver(e)}
                             attributeSetter={(e) => attributeSetter(e)}
                             validation={() => validateInput(state.age, inputFields.age, currentRef)}
                         />
                     </LabelInputHolder>
-                        {/* <br></br> */}
                     <LabelInputHolder>
-                        {/* <InputLabel htmlFor="address">Address: </InputLabel>
-                            <FormInput 
-                            type="text" //
-                            autoComplete="off" // 
-                            placeholder="32 allburns way" //
-                            value={state.address}
-                            ref={addressRef}
-                            onChange={(e) => {
-                                dispatch({ type: 'address', payload: e.target.value })
-                            }}
-                            onBlur={() => validateInput(state.address, inputFields.address, addressRef)}
-                            /> */}
                         <FocusEffectInput
                             stateName='address'
                             labelName="Address *"
                             stateValue={state.address}
                             {...controller} 
-                            dataCollector={(e) => refReceiver(e)}
+                            refCollector={(e) => refReceiver(e)}
                             attributeSetter={(e) => attributeSetter(e)}
                             validation={() => validateInput(state.address, inputFields.address, currentRef)}  
                         />

@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import { flex, noSelect, copyCat } from '../utils';
 
@@ -93,30 +93,26 @@ const FormDiv = styled.div`
     }
 `;
 
-const FocusEffectInput = ({ labelName, stateName, focusColor, initLabelSize, focusedLabelSize, inputFontSize, initFontColor, attributeSetter, dataCollector, validation, stateValue}) => {
-    const inputRef=useRef(null);
-    const [userIsTyping, setUserIsTyping] = useState(false)
+const FocusEffectInput = ({ labelName, stateName, focusColor, initLabelSize, focusedLabelSize, inputFontSize, initFontColor, attributeSetter, refCollector, validation, stateValue}) => {
+    const inputRef = useRef(null);
+    const [userTyping, setUserTyping] = useState(null);
     let timer;
 
-    const setValidateTimer =  () => {
+    const setValidateTimer = () => {
+        setUserTyping(false)
         timer = setTimeout(() => {
-            setUserIsTyping(false)
-            console.log('you stopped typing')
-        }, 800)
+            console.log('interval set')
+            validation()
+        }, 2000)
     }
-
     
     useEffect(() => {
-        const clearValidateTimer = () => {
-            clearTimeout(timer);
-            setUserIsTyping(true);
-        }
         window.addEventListener('keydown', () => {
-            clearValidateTimer()
+            setUserTyping(true)
+            clearTimeout(timer);
+            console.log('interval cleared');
         })
-    }, [timer, userIsTyping]) 
-    
-    console.log(userIsTyping)
+    }, [timer, userTyping]) 
 
     return (
             <>
@@ -129,17 +125,19 @@ const FocusEffectInput = ({ labelName, stateName, focusColor, initLabelSize, foc
                         name={stateName} 
                         autoCapitalize="true"
                         autoComplete="off" 
+                        value={stateValue}
                         required
                         focusColor={focusColor}
                         inputFontSize={inputFontSize}
                         ref={inputRef}
-                        onFocus={() => dataCollector(inputRef)}
+                        onFocus={() => refCollector(inputRef)}
                         onChange={(e) => {
                             attributeSetter(e)
                             setValidateTimer()
-                            !userIsTyping && validation()
                         }}
-                        value={stateValue}
+                        onKeyUp={(e) => { if (e.keyCode === 8) {
+                            setValidateTimer()
+                        }}}
                     >
                     </FormInput>
                     <InputLabel 
