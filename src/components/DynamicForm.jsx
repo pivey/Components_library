@@ -1,6 +1,11 @@
-import React, { useReducer, useEffect, useRef } from 'react';
+import React, { useReducer, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-// import FocusEffectInput from './FocusEffectInput';
+import { flex, noSelect } from '../utils';
+import FocusEffectInput from './FocusEffectInput';
+
+const sayHi = (input) =>  {
+    console.log(`${input}`)
+}
 
 const PageWrapper = styled.div`
     display:flex;
@@ -15,9 +20,10 @@ const BackgroundText = styled.p`
     width:50vw;
     padding:2rem;
     margin:0px;
-    font-size:1.8rem;
+    font-size:1.7rem;
     text-align:justify;
     line-height:1.4;
+    z-index:998;
 `;
 
 const Modal = styled.div`
@@ -35,8 +41,10 @@ const FormMother = styled.div`
     height:auto;
     width:auto;
     background:white;
-    padding:6rem 6rem 2rem 6rem;
-    border:2px solid darkGrey;
+    // padding:5rem 5rem 2rem 5rem;
+    padding: 1rem 5rem 1rem 5rem;
+    border:2px solid grey;
+    border-radius: 2px;
     z-index: 1000
 `;
 
@@ -90,9 +98,12 @@ const FormInput = styled.input`
 `;
 
 const FormSubmitBtn = styled.button`
+    ${noSelect}
     transition: all 0.3s
-    padding:1rem;
-    margin:3rem 0rem 1rem 0rem;
+    // padding:1rem;
+    padding:.5rem;
+    font-size:1.4rem
+    margin:2.5rem 0rem 1rem 0rem;
     border:2px solid black;
     pointer-events: none; 
     opacity:0.3;
@@ -183,15 +194,17 @@ const initState = {
 };
 
 const DynamicForm = () => {
-    const nameRef = useRef(null);
-    const emailRef = useRef(null);
-    const ageRef = useRef(null);
-    const addressRef = useRef(null);
-    const refs = [nameRef, emailRef, ageRef, addressRef];
+    // const nameRef = useRef(null);
+    // const emailRef = useRef(null);
+    // const ageRef = useRef(null);
+    // const addressRef = useRef(null);
+    // const refs = [nameRef, emailRef, ageRef, addressRef];
+    const refs = []
     const [state, dispatch] = useReducer(dynamicFormReducer, initState);
+    const [currentRef, setCurrentRef] = useState(null);
 
     const inputFields = {
-        name: /^[a-z\d]{1,20}$/i,
+        name: /^[a-z\d]{1,3}$/i,
         email: /^([a-z\d\.-]+)@([a-z\d-]+)\.([a-z]{2,8})(\.[a-z]{2,8})?$/,
         age: /^[0-9]{2,3}$/,
         address: /^\d+\s[A-z]+\s[A-z]+/,
@@ -209,18 +222,19 @@ const DynamicForm = () => {
         return res;
     }
 
-    useEffect(() => {
-    }, [state])
+    useEffect((e) => {
+        if (currentRef) currentRef.current.focus();
+    }, [currentRef, state])
 
-    const classReset = () => {
-        refs.map(el => {
-            el.current.classList.remove('valid');
-            el.current.classList.remove('invalid')
-        })
-    }
+    // const classReset = () => {
+    //     refs.map(el => {
+    //         el.current.classList.remove('valid');
+    //         el.current.classList.remove('invalid')
+    //     })
+    // }
 
     const validateTestData = () => {
-        classReset();
+        // classReset();
         const e = new Event('blur', { bubbles: true });
         let input = null;
         refs.map(x => {
@@ -235,7 +249,7 @@ const DynamicForm = () => {
         dispatch({ type: 'isLoggedIn', payload: true });
         setTimeout(() => {
             dispatch({ type: 'reset' }); 
-            classReset();
+            // classReset();
             dispatch({ type: 'isLoggedIn', payload: false });
         }, 1000)
     }
@@ -261,11 +275,35 @@ const DynamicForm = () => {
         const values = ['???)()(&&', '(((%%%)))harry@gmail.com', Number(0), '42 flanders ==//&&%%']
         const keys = Object.keys(state);
         keys.splice(keys.length - 1);
-        console.log(keys)
         keys.map((el, i) => {
             dispatch({ type: el, payload: values[i] })
         })
         setTimeout(() => validateTestData(), 0)
+    }
+
+    function getKeyByValue(object, value) {
+        const found = Object.keys(object).find(key => object[key] === value);
+        return `${found}`;
+    }
+
+    const controller = {
+        focusColor: 'green',
+        initLabelSize: '1.6rem',
+        focusedLabelSize: '1.3rem',
+        inputFontSize: '1.5rem',
+        initFontColor: '#454745',
+        onClick: sayHi,
+        onChange: dispatch,
+    }
+
+    const attributeSetter = (e) => {
+        e.target.setAttribute(getKeyByValue(controller, controller.onChange), controller.onChange({ type: e.target.name, payload: e.target.value }))
+    }
+
+    const refReceiver = (data) => {
+        console.log(data, 'hihihihihihihi');
+        setCurrentRef(data);
+        return data; 
     }
 
     return (
@@ -282,11 +320,9 @@ const DynamicForm = () => {
             <FormMother>
                 <FormHolder>
                     <LabelInputHolder>
-                        <InputLabel htmlFor="name">Name: </InputLabel>
+                        {/* <InputLabel htmlFor="name">Name: </InputLabel>
                             <FormInput 
                             type="text" //
-                            id="name" //
-                            name="name" //
                             autoComplete="off" //
                             placeholder="Monty" //
                             value={state.name}
@@ -295,15 +331,22 @@ const DynamicForm = () => {
                                 dispatch({ type: 'name', payload: e.target.value })
                             }}
                             onBlur={() => validateInput(state.name, inputFields.name, nameRef)}
+                        /> */}
+                        <FocusEffectInput 
+                            stateName='name'
+                            labelName="Name *" 
+                            stateValue={state.name}
+                            {...controller}
+                            dataCollector={(e) => refReceiver(e)}
+                            attributeSetter={(e) => attributeSetter(e)}
+                            validation={() => validateInput(state.name, inputFields.name, currentRef)}
                         />
                     </LabelInputHolder>
-                        <br></br>
+                        {/* <br></br> */}
                     <LabelInputHolder>
-                        <InputLabel htmlFor="email">Email: </InputLabel>
+                        {/* <InputLabel htmlFor="email">Email: </InputLabel>
                             <FormInput 
                             type="email" //
-                            id="email" //
-                            name="email" //
                             autoComplete="off" // 
                             placeholder="joe@email.com" //
                             value={state.email}
@@ -312,15 +355,22 @@ const DynamicForm = () => {
                                 dispatch({ type: 'email', payload: e.target.value })
                             }}
                             onBlur={() => validateInput(state.email, inputFields.email, emailRef)}
+                        /> */}
+                        <FocusEffectInput
+                            stateName='email'
+                            labelName="Email *"
+                            stateValue={state.email}
+                            {...controller} 
+                            dataCollector={(e) => refReceiver(e)}
+                            attributeSetter={(e) => attributeSetter(e)}
+                            validation={() => validateInput(state.email, inputFields.email, currentRef)}
                         />
                     </LabelInputHolder>
-                        <br></br>
+                        {/* <br></br> */}
                     <LabelInputHolder>
-                        <InputLabel htmlFor="age">Age: </InputLabel>
+                        {/* <InputLabel htmlFor="age">Age: </InputLabel>
                             <FormInput 
                             type="number" //
-                            id="age" // 
-                            name="age" //  
                             min="1" // 
                             autoComplete="off" // 
                             placeholder="30" //
@@ -330,15 +380,22 @@ const DynamicForm = () => {
                                 dispatch({ type: 'age', payload: e.target.value })
                             }}
                             onBlur={() => validateInput(state.age, inputFields.age, ageRef)}
+                        /> */}
+                        <FocusEffectInput 
+                            stateName='age'
+                            labelName="Age *" 
+                            stateValue={state.age}
+                            {...controller} 
+                            dataCollector={(e) => refReceiver(e)}
+                            attributeSetter={(e) => attributeSetter(e)}
+                            validation={() => validateInput(state.age, inputFields.age, currentRef)}
                         />
                     </LabelInputHolder>
-                        <br></br>
+                        {/* <br></br> */}
                     <LabelInputHolder>
-                        <InputLabel htmlFor="address">Address: </InputLabel>
+                        {/* <InputLabel htmlFor="address">Address: </InputLabel>
                             <FormInput 
                             type="text" //
-                            id="address" // 
-                            name="address" // 
                             autoComplete="off" // 
                             placeholder="32 allburns way" //
                             value={state.address}
@@ -347,7 +404,16 @@ const DynamicForm = () => {
                                 dispatch({ type: 'address', payload: e.target.value })
                             }}
                             onBlur={() => validateInput(state.address, inputFields.address, addressRef)}
-                            />
+                            /> */}
+                        <FocusEffectInput
+                            stateName='address'
+                            labelName="Address *"
+                            stateValue={state.address}
+                            {...controller} 
+                            dataCollector={(e) => refReceiver(e)}
+                            attributeSetter={(e) => attributeSetter(e)}
+                            validation={() => validateInput(state.address, inputFields.address, currentRef)}  
+                        />
                     </LabelInputHolder>
                     {validateForSubmit()  ? (
                         <FormSubmitBtn
