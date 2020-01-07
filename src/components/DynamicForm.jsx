@@ -8,10 +8,7 @@ const sayHi = (input) =>  {
 }
 
 const PageWrapper = styled.div`
-    display:flex;
-    flex-direction:row;
-    justify-content: flex-start; 
-    align-items:flex-start; 
+    ${flex('flex-start', 'flex-start')}
     position:absolute;
 `;
 
@@ -20,20 +17,17 @@ const BackgroundText = styled.p`
     width:50vw;
     padding:2rem;
     margin:0px;
-    font-size:1.7rem;
+    font-size:1.5rem;
     text-align:justify;
     line-height:1.4;
     z-index:998;
 `;
 
 const Modal = styled.div`
+    ${flex('center', 'center', 'column')}
     height:100vh;
     width:100vw;
     background:rgba(38, 12, 12, 0.15);
-    display:flex;
-    flex-direction: column
-    justify-content:center; 
-    align-items:center; 
     z-index:999;
 `;
 
@@ -49,58 +43,20 @@ const FormMother = styled.div`
 `;
 
 const FormHolder = styled.form`
+    ${flex('center', 'center', 'column')}
     font-size:2.5rem;
-    display:flex;  
-    flex-direction:column;
-    justify-content: center; 
-    align-items: center; 
 `;
 
 const LabelInputHolder = styled.div`
+    ${flex('space-between', 'center')}
     height:auto;
     width:100%;
-    display:flex;
     margin: 0.2rem 0rem;
-    justify-content: space-between; 
-    align-items: center; 
-`;
-
-const InputLabel = styled.label`
-`;
-
-const FormInput = styled.input`
-    transition: all 0.3s
-    height:auto;
-    width:70%;
-    padding:1rem;
-    background:white;
-    color:black;
-    border:2px solid lightGrey;
-    &::placeholder {
-        font-size:1.5rem;
-    }
-    &:hover {
-        cursor: pointer;
-        color:black;
-        border:2px solid black;
-    }
-    &:focus {
-        border:2px solid green;
-    }
-    &.invalid {
-        color:red;
-        border:2px solid red;
-    }
-    &.valid {
-        color:green;
-        border:2px solid green;
-    }
 `;
 
 const FormSubmitBtn = styled.button`
     ${noSelect}
     transition: all 0.3s
-    // padding:1rem;
     padding:.5rem;
     font-size:1.4rem
     margin:2.5rem 0rem 1rem 0rem;
@@ -194,11 +150,6 @@ const initState = {
 };
 
 const DynamicForm = () => {
-    // const nameRef = useRef(null);
-    // const emailRef = useRef(null);
-    // const ageRef = useRef(null);
-    // const addressRef = useRef(null);
-    // const refs = [nameRef, emailRef, ageRef, addressRef];
     const refs = []
     const [state, dispatch] = useReducer(dynamicFormReducer, initState);
     const [currentRef, setCurrentRef] = useState(null);
@@ -224,9 +175,10 @@ const DynamicForm = () => {
 
     useEffect((e) => {
         if (currentRef) {
-            currentRef.current.focus();
             currentRef.current.blur();
+            currentRef.current.focus();
         }
+        
     }, [currentRef, state.isLoggedIn])
 
     // const classReset = () => {
@@ -254,6 +206,7 @@ const DynamicForm = () => {
             dispatch({ type: 'reset' }); 
             dispatch({ type: 'isLoggedIn', payload: false });
         }, 1000)
+        setCurrentRef(null);
     }
 
     const validateInput = (inputValue, regex, ref) => {
@@ -275,7 +228,10 @@ const DynamicForm = () => {
         keys.map((el, i) => {
             dispatch({ type: el, payload: values[i] })
         })
-        setTimeout(() => validateTestData(), 0);        
+        setTimeout(() => validateTestData(), 0);     
+        if (currentRef) {
+            currentRef.current.blur();
+        } 
     }
 
     const insertIncorrectInfo = () => {
@@ -308,7 +264,6 @@ const DynamicForm = () => {
     }
 
     const refReceiver = (data) => {
-        console.log(data, 'hihihihihihihi');
         setCurrentRef(data);
         return data; 
     }
@@ -325,7 +280,7 @@ const DynamicForm = () => {
                 <FillInputBtn onClick={() => insertIncorrectInfo()}>Incorrect</FillInputBtn>
             </ButtonHolder>
             <FormMother>
-                <FormHolder>
+                    <FormHolder autoComplete="new-password">
                     <LabelInputHolder>
                         {/* <InputLabel htmlFor="name">Name: </InputLabel>
                             <FormInput 

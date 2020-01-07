@@ -6,22 +6,6 @@ import LoginUseReducer from './components/LoginUseReducer';
 import LoginUseReducerImmer from './components/LoginUseReducerImmer';
 import FocusEffectInput from './components/FocusEffectInput';
 import DynamicForm from './components/DynamicForm';
-import FormPlaceHolder from './components/FormPlaceHolder';
-
-// const PopUpBtn = styled.button`
-//   height:auto;
-//   width:auto;
-//   color:white;
-//   background:green; 
-//   font-size:1.2rem;
-//   position: absolute;
-//   left: 50%;
-//   transform: translate(-50%, 0);
-//   font-weight:bold;
-//   &:focus {
-//         outline: 0;
-//     }
-// `;
 
 const useLocationHash  = () => {
   const [hash, setHash] = useState(window.location.hash);
@@ -46,19 +30,12 @@ const useSimpleHashRouter = (routes) => {
 }
 
 function App() {
-    // const [popUp, setPopUp] = useState({
-    //   open: false,
-    //   title: 'User deleted',
-    //   text: 'the user with the name of: John was successfully deleted'
-    // });
-    // const [accept, setAccept] = useState(false)
 
   const CurrentRoute = useSimpleHashRouter({
     useReducer: LoginUseReducer,
     useReducerImmer: LoginUseReducerImmer,
     FocusEffectInput: FocusEffectInput,
     DynamicForm: DynamicForm,
-    FormPlaceHolder: FormPlaceHolder,
   });
 
   return (
@@ -76,9 +53,6 @@ function App() {
           <br />
           <br />
           <a href="#DynamicForm">DynamicForm</a>
-          <br />
-          <br />
-          <a href="#FormPlaceHolder">FormPlaceHolder</a>
         </div>
         </>
       )}

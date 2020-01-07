@@ -1,6 +1,6 @@
-import React, { useRef, useState, useEffect, useCallback } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { flex, noSelect, copyCat } from '../utils';
+import { noSelect } from '../utils';
 
 const controller = {
     focusColor: 'green', 
@@ -46,7 +46,7 @@ const InputLabel = styled.label`
     bottom:0px; 
     left:7px;
     pointer-events:none;
-    border-bottom: 0.5px solid ${({ initFontColor }) => initFontColor || controller.initFontColor};
+    border-bottom: 1px solid ${({ initFontColor }) => initFontColor || controller.initFontColor};
     overflow: hidden;
     &::after {
         content:'';
@@ -101,7 +101,6 @@ const FocusEffectInput = ({ labelName, stateName, focusColor, initLabelSize, foc
     const setValidateTimer = () => {
         setUserTyping(false)
         timer = setTimeout(() => {
-            console.log('interval set')
             validation()
         }, 2000)
     }
@@ -110,7 +109,6 @@ const FocusEffectInput = ({ labelName, stateName, focusColor, initLabelSize, foc
         window.addEventListener('keydown', () => {
             setUserTyping(true)
             clearTimeout(timer);
-            console.log('interval cleared');
         })
     }, [timer, userTyping]) 
 
@@ -142,7 +140,6 @@ const FocusEffectInput = ({ labelName, stateName, focusColor, initLabelSize, foc
                     </FormInput>
                     <InputLabel 
                         htmlFor={stateName}
-                        autoComplete="off"
                         initFontColor={initFontColor}
                         initLabelSize={initLabelSize}
                         focusColor={focusColor}

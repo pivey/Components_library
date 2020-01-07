@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import FocusEffectInput from './FocusEffectInput';
+import FocusEffectInput from '../src/components/FocusEffectInput';
 
 const controller = {
     focusColor: 'green',
