@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-// import styled from 'styled-components';
 import './styles/App.css';
 import './styles/base.css';
 import LoginUseReducer from './components/LoginUseReducer';

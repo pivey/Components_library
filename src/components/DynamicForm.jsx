@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, useRef, useState } from 'react';
+import React, { useReducer, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { flex, noSelect } from '../utils';
 import FocusEffectInput from './FocusEffectInput';
@@ -35,7 +35,6 @@ const FormMother = styled.div`
     height:auto;
     width:auto;
     background:white;
-    // padding:5rem 5rem 2rem 5rem;
     padding: 1rem 5rem 1rem 5rem;
     border:2px solid grey;
     border-radius: 2px;
@@ -150,14 +149,14 @@ const initState = {
 };
 
 const DynamicForm = () => {
-    const refs = []
     const [state, dispatch] = useReducer(dynamicFormReducer, initState);
     const [currentRef, setCurrentRef] = useState(null);
+    const [fillInputs, setfillInputs] = useState(false);
 
     const inputFields = {
         name: /^[a-z\d]{1,15}$/i,
         email: /^([A-Za-z\d\.-]+)@([a-z\d-]+)\.([a-z]{2,8})(\.[a-z]{2,8})?$/,
-        age: /^[0-9]{1,2}$/,
+        age: /^[1-9]{1,2}$/,
         address: /^\d+\s[A-z]+\s[A-z]+/,
         // address: /\b\d{1,6} +.{2,25}\b(avenue|ave|court|ct|street|st|drive|dr|lane|ln|road|rd|blvd|plaza|parkway|pkwy)[.,]?(.{0,25} +\b\d{5}\b)?/ig,
     }
@@ -173,30 +172,33 @@ const DynamicForm = () => {
         return res;
     }
 
-    useEffect((e) => {
-        if (currentRef) {
-            currentRef.current.blur();
-            currentRef.current.focus();
+    useEffect(() => {
+        const validateTestData = () => {
+            const allInput = document.querySelectorAll('input');
+            const inputsArr = Array.from(allInput);
+            inputsArr.map(el => {
+                const tested = inputFields[el.name].test(state[el.name]);
+                if (!tested) {
+                    el.classList.add('invalid');
+                    el.classList.remove('valid');
+                }
+                if (tested) {
+                    el.classList.add('valid');
+                    el.classList.remove('invalid');
+                }
+            })
         }
         
-    }, [currentRef, state.isLoggedIn])
+        if(state.name && fillInputs) {
+            validateTestData();
+        }
+        
+    }, [state, fillInputs, inputFields, currentRef])
 
     // const classReset = () => {
-    //     refs.map(el => {
-    //         el.current.classList.remove('valid');
-    //         el.current.classList.remove('invalid')
-    //     })
+    //     currentRef.current.classList.remove('invalid')
+    //     currentRef.current.classList.remove('valid');
     // }
-
-    const validateTestData = () => {
-        // classReset();
-        const e = new Event('input', { bubbles: true });
-        let input = null;
-        refs.map(x => {
-            input = x.current;
-            input.dispatchEvent(e);
-        })
-    }
     
     const  submitHandler = (e) => {
         e.preventDefault();
@@ -207,6 +209,7 @@ const DynamicForm = () => {
             dispatch({ type: 'isLoggedIn', payload: false });
         }, 1000)
         setCurrentRef(null);
+        setfillInputs(!fillInputs)
     }
 
     const validateInput = (inputValue, regex, ref) => {
@@ -228,10 +231,8 @@ const DynamicForm = () => {
         keys.map((el, i) => {
             dispatch({ type: el, payload: values[i] })
         })
-        setTimeout(() => validateTestData(), 0);     
-        if (currentRef) {
-            currentRef.current.blur();
-        } 
+        setfillInputs(true)
+        // setTimeout(() => validateTestData(), 0);
     }
 
     const insertIncorrectInfo = () => {
@@ -241,7 +242,8 @@ const DynamicForm = () => {
         keys.map((el, i) => {
             dispatch({ type: el, payload: values[i] })
         })
-        setTimeout(() => validateTestData(), 0)
+        setfillInputs(true)
+        // setTimeout(() => validateTestData(), 0);
     }
 
     function getKeyByValue(object, value) {
@@ -282,18 +284,6 @@ const DynamicForm = () => {
             <FormMother>
                     <FormHolder autoComplete="new-password">
                     <LabelInputHolder>
-                        {/* <InputLabel htmlFor="name">Name: </InputLabel>
-                            <FormInput 
-                            type="text" //
-                            autoComplete="off" //
-                            placeholder="Monty" //
-                            value={state.name}
-                            ref={nameRef}
-                            onChange={(e) => {
-                                dispatch({ type: 'name', payload: e.target.value })
-                            }}
-                            onBlur={() => validateInput(state.name, inputFields.name, nameRef)}
-                        /> */}
                         <FocusEffectInput 
                             stateName='name'
                             labelName="Name *" 

@@ -102,13 +102,15 @@ const FocusEffectInput = ({ labelName, stateName, focusColor, initLabelSize, foc
         setUserTyping(false)
         timer = setTimeout(() => {
             validation()
-        }, 2000)
+            console.log('interval set')
+        }, 1500)
     }
     
     useEffect(() => {
         window.addEventListener('keydown', () => {
             setUserTyping(true)
             clearTimeout(timer);
+            console.log('interval cleared')
         })
     }, [timer, userTyping]) 
 
