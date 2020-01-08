@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { noSelect } from '../utils';
 
 const controller = {
-    focusColor: 'green', 
+    focusColor: '#6610F2', 
     initLabelSize: '1.6rem',
     focusedLabelSize: '1.3rem',
     inputFontSize: '1.5rem',
@@ -103,7 +103,7 @@ const FocusEffectInput = ({ labelName, stateName, focusColor, initLabelSize, foc
         timer = setTimeout(() => {
             validation()
             console.log('interval set')
-        }, 1500)
+        }, 1000)
     }
     
     useEffect(() => {

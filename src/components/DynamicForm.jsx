@@ -2,6 +2,7 @@ import React, { useReducer, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { flex, noSelect } from '../utils';
 import FocusEffectInput from './FocusEffectInput';
+import penicon from '../icons/pen-square-solid.svg'
 
 const sayHi = (input) =>  {
     console.log(`${input}`)
@@ -17,7 +18,7 @@ const BackgroundText = styled.p`
     width:50vw;
     padding:2rem;
     margin:0px;
-    font-size:1.5rem;
+    font-size:1.8rem;
     text-align:justify;
     line-height:1.4;
     z-index:998;
@@ -29,16 +30,18 @@ const Modal = styled.div`
     width:100vw;
     background:rgba(38, 12, 12, 0.15);
     z-index:999;
+    position:fixed;
 `;
 
 const FormMother = styled.div`
     height:auto;
     width:auto;
     background:white;
-    padding: 1rem 5rem 1rem 5rem;
-    border:2px solid grey;
-    border-radius: 2px;
-    z-index: 1000
+    padding: 6rem 5rem 1rem 5rem;
+    // border: 2px solid transparent;
+    border-radius: 5px;
+    z-index: 1000;
+    position:relative;
 `;
 
 const FormHolder = styled.form`
@@ -50,26 +53,29 @@ const LabelInputHolder = styled.div`
     ${flex('space-between', 'center')}
     height:auto;
     width:100%;
-    margin: 0.2rem 0rem;
+    margin: 0rem;
 `;
 
 const FormSubmitBtn = styled.button`
     ${noSelect}
-    transition: all 0.3s
-    padding:.5rem;
+    font-weight:bold;
+    border-radius:5px;
+    transition: all 0.2s
+    padding: 1rem 2.5rem;
     font-size:1.4rem
     margin:2.5rem 0rem 1rem 0rem;
-    border:2px solid black;
+    border: 1px solid grey;
     pointer-events: none; 
     opacity:0.3;
     &.clickable {
         pointer-events:auto; 
         opacity:1;
-        background: green;
+        background: #6610F2;
         color:white;
-        border:2px solid white;
+        border: 1px solid white;
     &:hover {
         cursor: pointer;
+        transform: scale(0.95)
         }
     }
     &.noClick {
@@ -82,10 +88,10 @@ const LoggedInMessage = styled.div`
     max-width:50%;
     height:auto;
     text-align:center; 
-    font-size:2rem;
-    border:2px solid green;
-    background:white;
-    color:green;
+    font-size:1.8rem;
+    border: 2px solid #6610F2;
+    background: white;
+    color:#6610F2;
     margin-top:2rem;
     z-index:1000;
     padding:1rem
@@ -101,21 +107,63 @@ const ButtonHolder = styled.div`
 `;
 
 const FillInputBtn = styled.button`
+    transition: all 0.25s
     padding:1rem;
     height:auto;
     width:auto;
     font-size:1.4rem;
     font-weight:bold;
     margin: 0rem 2rem
-    border:2px solid black;
+    border: 2px solid transparent;
+    border-radius:5px;
     background:white;
     &:hover {
         cursor: pointer;
-        background:black; 
-        color:white;
-        border:2px solid white;
+        background:white; 
+        color:#6610F2;
+        border:2px solid #6610F2;
         transform: scale(0.98)
     }
+`;
+
+const Banner = styled.div`
+    height:auto;
+    padding: 1.2rem;
+    padding-left: 1.5rem;
+    width:auto;
+    border-left: .8rem solid #6610F2;
+    color: #6610F2;
+    font-size:2.5rem;
+    font-weight:bold;  
+    position:absolute;
+    left:0rem;
+    top:2rem;
+`;
+
+const IconHolder = styled.div`
+    height:50px;
+    width:80px;
+    background:white;
+    position:absolute;
+    top:3rem;
+    right:-2rem;
+`;
+
+const PenDiv = styled.img`
+    transition: all 1.2s ease-in-out;
+    height:8rem;
+    width:8rem;
+    filter: invert(13%) sepia(99%) saturate(6389%) hue-rotate(266deg) brightness(91%) contrast(110%);
+    position:absolute
+    right:-2rem;
+    top:-2rem
+    &:hover {
+    -ms-transform: rotate(360deg); /* IE 9 */
+    -webkit-transform: rotate(360deg); /* Chrome, Safari, Opera */
+    transform: rotate(360deg);
+    filter: invert(38%) sepia(75%) saturate(1338%) hue-rotate(154deg) brightness(100%) contrast(88%);
+    }
+    
 `;
 
 function dynamicFormReducer(state, action) {
@@ -252,7 +300,7 @@ const DynamicForm = () => {
     }
 
     const controller = {
-        focusColor: 'green',
+        focusColor: '#6610F2',
         initLabelSize: '1.6rem',
         focusedLabelSize: '1.3rem',
         inputFontSize: '1.5rem',
@@ -283,6 +331,8 @@ const DynamicForm = () => {
             </ButtonHolder>
             <FormMother>
                     <FormHolder autoComplete="new-password">
+                        <Banner>Information</Banner>
+                        <IconHolder><PenDiv src={penicon}></PenDiv></IconHolder>
                     <LabelInputHolder>
                         <FocusEffectInput 
                             stateName='name'
@@ -331,7 +381,7 @@ const DynamicForm = () => {
                         <FormSubmitBtn
                             onClick={(e) => submitHandler(e)}
                             type="submit"
-                            className="clickable"
+                                className="clickable hvr-bob"
                         >Submit</FormSubmitBtn>
                     ) : 
                     <FormSubmitBtn
