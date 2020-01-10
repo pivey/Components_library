@@ -5,6 +5,7 @@ import LoginUseReducer from './components/LoginUseReducer';
 import LoginUseReducerImmer from './components/LoginUseReducerImmer';
 import FocusEffectInput from './components/FocusEffectInput';
 import DynamicForm from './components/DynamicForm';
+import ParallaxTitles from './components/ParallaxTitles';
 
 const useLocationHash  = () => {
   const [hash, setHash] = useState(window.location.hash);
@@ -35,6 +36,7 @@ function App() {
     useReducerImmer: LoginUseReducerImmer,
     FocusEffectInput: FocusEffectInput,
     DynamicForm: DynamicForm,
+    ParallaxTitles: ParallaxTitles,
   });
 
   return (
@@ -52,6 +54,9 @@ function App() {
           <br />
           <br />
           <a href="#DynamicForm">DynamicForm</a>
+          <br />
+          <br />
+          <a href="#ParallaxTitles">ParallaxTitles</a>
         </div>
         </>
       )}
