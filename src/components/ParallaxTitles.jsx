@@ -33,13 +33,14 @@ const ParallaxTitle = styled.h2`
     background-position: 100%;
     background-attachment:fixed;
     background-image: ${({ bgcimg }) => `url(${bgcimg})`}
-    
 `;
 
 const PlaceholderText = styled.p`
     max-width:800px;
+    max-height:500px;
+    overflow-x:scroll;
     margin:2rem auto;
-    padding:2rem 2rem;
+    padding:1.5rem 2rem;
     text-align: justify;
     text-justify: inter-word;
     line-height:1.5;
@@ -61,7 +62,7 @@ const PlacesNav = styled.nav`
     ${flex('flex-end', 'center')}
     width:100vw;
     height:auto;
-    background: #E1DEE3;
+    background: #D5A18E;
     padding:1.8rem;
     z-index:1000;
     position:fixed;
@@ -86,12 +87,12 @@ const NavLi = styled.li`
     ${noSelect}
     font-size:1.8rem;
     padding:1rem;
-    background: #E1DEE3;
+    background: #D5A18E;
     min-width:15rem;
     text-align:center;
     &:hover, &.selected {
         color:white;
-        background:black;
+        background:#DEC3BE;
         cursor:pointer
     }
 `;
@@ -111,8 +112,8 @@ const NavClick = styled.div`
 
 const Chevron = styled.img`
     transition: all 1s;
-    width:2rem;
-    height:2rem;
+    width:2.5rem;
+    height:2.5rem;
     margin-left:1rem;
 `;
 
@@ -149,7 +150,7 @@ const ParallaxTitles = () => {
     return (
         <>
             <PlacesNav>
-                <NavTitle>Cities of the World</NavTitle>
+                <NavTitle>World Cities</NavTitle>
                     <NavClick onClick={() => setNavStatus(!navStatus)}><Chevron src={!navStatus ? hamburger : cross}/></NavClick>
                     {navStatus && 
                     (<NavUl ref={navRef}>

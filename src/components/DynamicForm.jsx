@@ -27,6 +27,7 @@ const Modal = styled.div`
     z-index:999;
     position:fixed;
     visibility: ${({visible}) => visible ? 'visible' : 'hidden'};
+    display: ${({ visible }) => !visible && 'none'};
 `;
 
 const FormMother = styled.div`
@@ -35,7 +36,6 @@ const FormMother = styled.div`
     width:auto;
     background:white;
     padding: 6rem 5rem 1rem 5rem;
-    // border: 2px solid transparent;
     border-radius: 5px;
     z-index: 1000;
     position:relative;
@@ -60,7 +60,7 @@ const FormSubmitBtn = styled.button`
     transition: all 0.2s;
     padding: 1rem 2.5rem;
     font-size:1.4rem
-    margin:2.5rem 0rem 1rem 0rem;
+    margin:2.5rem 0rem 2rem 0rem;
     border: 1px solid grey;
     pointer-events: none; 
     opacity:0.3;
@@ -149,18 +149,18 @@ const IconHolder = styled.div`
 const PenDiv = styled.img`
     transition: 0s;
     // transition: all 1.2s ease-in-out;
-    height:8rem;
-    width:8rem;
+    height:7rem;
+    width:7rem;
     filter: invert(13%) sepia(99%) saturate(6389%) hue-rotate(266deg) brightness(91%) contrast(110%);
     position:absolute
-    right:-2rem;
-    top:-2rem
-    &:hover {
-    -ms-transform: rotate(360deg); /* IE 9 */
-    -webkit-transform: rotate(360deg); /* Chrome, Safari, Opera */
-    transform: rotate(360deg);
-    filter: invert(38%) sepia(75%) saturate(1338%) hue-rotate(154deg) brightness(100%) contrast(88%);
-    }
+    right:-1rem;
+    top:-1rem
+    // &:hover {
+    // -ms-transform: rotate(360deg); /* IE 9 */
+    // -webkit-transform: rotate(360deg); /* Chrome, Safari, Opera */
+    // transform: rotate(360deg);
+    // filter: invert(38%) sepia(75%) saturate(1338%) hue-rotate(154deg) brightness(100%) contrast(88%);
+    // }
 `;
 
 const slideInFromLeft = keyframes`
@@ -183,11 +183,6 @@ const slideBackLeft = keyframes`
 
 const FormOpener = styled.button`
     transition: all 0.2s;
-    // animation-duration: 1s; /* the duration of the animation */
-    // animation-timing-function: ease-out; /* how the animation will behave */
-    // animation-delay: 0s; /* how long to delay the animation from starting */
-    // animation-iteration-count: 1; /* how many times the animation will play */
-    // animation-name: slideInFromLeft; /* the name of the animation we defined above */
     animation: 0.7s cubic-bezier(.57,.21,.69,1.25) 0s 1 ${({ animate }) => animate ? slideBackLeft : slideInFromLeft};
     animation-fill-mode: forwards;
     width:auto;
@@ -211,17 +206,31 @@ const FormOpener = styled.button`
     }
 `;
 
-const FormCloser = styled.div`
-    width: 20px;
-    height:20px;
-    background: green; 
-    position:absolute;
-    top:0px;
-    left:0px;
-    &:hover {
-        cursor:pointer;
-    }
+const ActionBtnHolder = styled.div`
+    ${flex('center', 'center')}
+    width:auto;
+    height:auto;
 `;
+
+const CancelButton = styled.button`
+    ${noSelect}
+    font-weight:bold;
+    border-radius:5px;
+    transition: all 0.2s;
+    padding: 1rem 2.5rem;
+    font-size:1.4rem
+    margin:2.5rem 2rem 2rem 0rem;
+    border: 1px solid grey;
+    background: #D72638;
+    color:white;
+    border: 1px solid white;
+    &:hover {
+        cursor: pointer;
+        transform: scale(0.95)
+    }
+    
+`;
+
 
 function dynamicFormReducer(state, action) {
     switch (action.type) {
@@ -300,11 +309,6 @@ const DynamicForm = () => {
         }
         
     }, [state, fillInputs, inputFields, currentRef])
-
-    // const classReset = () => {
-    //     currentRef.current.classList.remove('invalid')
-    //     currentRef.current.classList.remove('valid');
-    // }
     
     const  submitHandler = (e) => {
         e.preventDefault();
@@ -313,6 +317,7 @@ const DynamicForm = () => {
         setTimeout(() => {
             dispatch({ type: 'reset' }); 
             dispatch({ type: 'isLoggedIn', payload: false });
+            setOpenForm(false);
         }, 1000)
         setCurrentRef(null);
         setfillInputs(!fillInputs)
@@ -364,6 +369,7 @@ const DynamicForm = () => {
         inputFontSize: '1.5rem',
         initFontColor: '#454745',
         onChange: dispatch,
+        states: [{ stateName: 'name', labelName: 'Name *' }, { stateName: 'email', labelName: 'Email *' }, { stateName: 'age', labelName: 'Age *' }, { stateName: 'address', labelName: 'Address *' }]
     }
 
     const attributeSetter = (e) => {
@@ -388,65 +394,42 @@ const DynamicForm = () => {
                 <FillInputBtn onClick={() => insertIncorrectInfo()}>Incorrect</FillInputBtn>
             </ButtonHolder>
             <FormMother>
-                    <FormCloser onClick={() => setOpenForm(!openForm)}/>
                     <FormHolder autoComplete="new-password">
                         <Banner>Information</Banner>
                         <IconHolder><PenDiv src={penicon} trans={openForm}></PenDiv></IconHolder>
-                    <LabelInputHolder>
-                        <FocusEffectInput 
-                            stateName='name'
-                            labelName="Name *" 
-                            stateValue={state.name}
-                            {...controller}
-                            refCollector={(e) => refReceiver(e)}
-                            attributeSetter={(e) => attributeSetter(e)}
-                            validation={() => validateInput(state.name, inputFields.name, currentRef)}
-                        />
-                    </LabelInputHolder>
-                    <LabelInputHolder>
-                        <FocusEffectInput
-                            stateName='email'
-                            labelName="Email *"
-                            stateValue={state.email}
-                            {...controller} 
-                            refCollector={(e) => refReceiver(e)}
-                            attributeSetter={(e) => attributeSetter(e)}
-                            validation={() => validateInput(state.email, inputFields.email, currentRef)}
-                        />
-                    </LabelInputHolder>
-                    <LabelInputHolder>
-                        <FocusEffectInput 
-                            stateName='age'
-                            labelName="Age *" 
-                            stateValue={state.age}
-                            {...controller} 
-                            refCollector={(e) => refReceiver(e)}
-                            attributeSetter={(e) => attributeSetter(e)}
-                            validation={() => validateInput(state.age, inputFields.age, currentRef)}
-                        />
-                    </LabelInputHolder>
-                    <LabelInputHolder>
-                        <FocusEffectInput
-                            stateName='address'
-                            labelName="Address *"
-                            stateValue={state.address}
-                            {...controller} 
-                            refCollector={(e) => refReceiver(e)}
-                            attributeSetter={(e) => attributeSetter(e)}
-                            validation={() => validateInput(state.address, inputFields.address, currentRef)}  
-                        />
-                    </LabelInputHolder>
-                    {validateForSubmit()  ? (
-                        <FormSubmitBtn
-                            onClick={(e) => submitHandler(e)}
+                        {
+                            controller.states.map((el, i) => {
+                                return (
+                                    <LabelInputHolder>
+                                        <FocusEffectInput
+                                            stateName={el.stateName}
+                                            labelName={el.labelName}
+                                            stateValue={state[el.stateName]}
+                                            {...controller}
+                                            refCollector={(e) => refReceiver(e)}
+                                            attributeSetter={(e) => attributeSetter(e)}
+                                            validation={() => validateInput(state[el.stateName], inputFields[el.stateName], currentRef)}
+                                        />
+                                    </LabelInputHolder>
+                                )
+                            })
+                        }
+                    <ActionBtnHolder>
+                            <CancelButton
                             type="submit"
-                                className="clickable hvr-bob"
-                        >Submit</FormSubmitBtn>
-                    ) : 
-                    <FormSubmitBtn
-                        type="submit"
-                        className="noClick"
-                    >Submit</FormSubmitBtn>}
+                            onClick={() => setOpenForm(!openForm)}>Cancel</CancelButton>
+                        {validateForSubmit()  ? (
+                            <FormSubmitBtn
+                                onClick={(e) => submitHandler(e)}
+                                type="submit"
+                                    className="clickable"
+                            >Submit</FormSubmitBtn>
+                        ) : 
+                        <FormSubmitBtn
+                            type="submit"
+                            className="noClick"
+                        >Submit</FormSubmitBtn>}
+                    </ActionBtnHolder>
                     
                 </FormHolder>
             </FormMother>
