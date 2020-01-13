@@ -2,7 +2,6 @@ import React, { useReducer, useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { flex, noSelect } from '../utils';
 import FocusEffectInput from './FocusEffectInput';
-import penicon from '../icons/pen-square-solid.svg'
 
 const PageWrapper = styled.div`
     ${flex('flex-start', 'flex-start')}
@@ -67,7 +66,7 @@ const FormSubmitBtn = styled.button`
     &.clickable {
         pointer-events:auto; 
         opacity:1;
-        background: #6610F2;
+        background: ${({ actionBtn_2: { bgc } }) => bgc || '#6610F2' };
         color:white;
         border: 1px solid white;
     &:hover {
@@ -86,9 +85,9 @@ const LoggedInMessage = styled.div`
     height:auto;
     text-align:center; 
     font-size:1.8rem;
-    border: 2px solid #6610F2;
+    border: 2px solid ${({ focusColor }) => focusColor || '#6610F2'};
     background: white;
-    color:#6610F2;
+    color:${({ focusColor }) => focusColor || '#6610F2'};
     margin-top:2rem;
     z-index:1000;
     padding:1rem
@@ -117,50 +116,24 @@ const FillInputBtn = styled.button`
     &:hover {
         cursor: pointer;
         background:white; 
-        color:#6610F2;
-        border:2px solid #6610F2;
+        color:${({ focusColor }) => focusColor || '#6610F2'};
+        border:2px solid ${({ focusColor }) => focusColor || '#6610F2'};
         transform: scale(0.98)
     }
 `;
 
 const Banner = styled.div`
     height:auto;
-    padding: 1.2rem;
-    padding-left: 1.5rem;
     width:auto;
-    border-left: .8rem solid #6610F2;
-    color: #6610F2;
-    font-size:2.5rem;
+    padding: 1.2rem;
+    padding-left: 4.8rem;
+    border-left: .8rem solid ${({ focusColor }) => focusColor || '#6610F2'};
+    color: ${({ focusColor }) => focusColor || '#6610F2'};
+    font-size:2.8rem;
     font-weight:bold;  
     position:absolute;
     left:0rem;
-    top:2rem;
-`;
-
-const IconHolder = styled.div`
-    height:50px;
-    width:80px;
-    background:white;
-    position:absolute;
-    top:3rem;
-    right:-2rem;
-`;
-
-const PenDiv = styled.img`
-    transition: 0s;
-    // transition: all 1.2s ease-in-out;
-    height:7rem;
-    width:7rem;
-    filter: invert(13%) sepia(99%) saturate(6389%) hue-rotate(266deg) brightness(91%) contrast(110%);
-    position:absolute
-    right:-1rem;
-    top:-1rem
-    // &:hover {
-    // -ms-transform: rotate(360deg); /* IE 9 */
-    // -webkit-transform: rotate(360deg); /* Chrome, Safari, Opera */
-    // transform: rotate(360deg);
-    // filter: invert(38%) sepia(75%) saturate(1338%) hue-rotate(154deg) brightness(100%) contrast(88%);
-    // }
+    top:1.5rem;
 `;
 
 const slideInFromLeft = keyframes`
@@ -200,7 +173,7 @@ const FormOpener = styled.button`
     &:hover {
         cursor: pointer;
         border: 2px solid white;
-        background: #6610F2;
+        background: ${({ focusColor }) => focusColor || '#6610F2'};
         color:white;
         transform: scale(0.95)
     }
@@ -221,16 +194,14 @@ const CancelButton = styled.button`
     font-size:1.4rem
     margin:2.5rem 2rem 2rem 0rem;
     border: 1px solid grey;
-    background: #D72638;
+    background: ${({ actionBtn_1: { bgc }}) => bgc };
     color:white;
     border: 1px solid white;
     &:hover {
         cursor: pointer;
         transform: scale(0.95)
     }
-    
 `;
-
 
 function dynamicFormReducer(state, action) {
     switch (action.type) {
@@ -266,7 +237,7 @@ const DynamicForm = () => {
     const [state, dispatch] = useReducer(dynamicFormReducer, initState);
     const [currentRef, setCurrentRef] = useState(null);
     const [fillInputs, setfillInputs] = useState(false);
-    const [openForm, setOpenForm] = useState(false);
+    const [openForm, setOpenForm] = useState(true);
 
     const inputFields = {
         name: /^[a-z\d]{1,15}$/i,
@@ -369,7 +340,11 @@ const DynamicForm = () => {
         inputFontSize: '1.5rem',
         initFontColor: '#454745',
         onChange: dispatch,
-        states: [{ stateName: 'name', labelName: 'Name *' }, { stateName: 'email', labelName: 'Email *' }, { stateName: 'age', labelName: 'Age *' }, { stateName: 'address', labelName: 'Address *' }]
+        states: [{ stateName: 'name', labelName: 'Name *' }, { stateName: 'email', labelName: 'Email *' }, { stateName: 'age', labelName: 'Age *' }, { stateName: 'address', labelName: 'Address *' }],
+        banner: true,
+        bannerText: 'Information',
+        actionBtn_1: { text: 'Cancel', bgc: '#eb0505' },
+        actionBtn_2: { text: 'Submit', bgc:'#0cc212'}
     }
 
     const attributeSetter = (e) => {
@@ -394,9 +369,8 @@ const DynamicForm = () => {
                 <FillInputBtn onClick={() => insertIncorrectInfo()}>Incorrect</FillInputBtn>
             </ButtonHolder>
             <FormMother>
-                    <FormHolder autoComplete="new-password">
-                        <Banner>Information</Banner>
-                        <IconHolder><PenDiv src={penicon} trans={openForm}></PenDiv></IconHolder>
+                    <FormHolder>
+                    {controller.banner && <Banner {...controller}>{controller.bannerText}</Banner>}
                         {
                             controller.states.map((el, i) => {
                                 return (
@@ -416,19 +390,22 @@ const DynamicForm = () => {
                         }
                     <ActionBtnHolder>
                             <CancelButton
-                            type="submit"
-                            onClick={() => setOpenForm(!openForm)}>Cancel</CancelButton>
+                                type="submit"
+                                {...controller}
+                                onClick={() => setOpenForm(!openForm)}
+                                >{controller.actionBtn_1.text}</CancelButton>
                         {validateForSubmit()  ? (
                             <FormSubmitBtn
                                 onClick={(e) => submitHandler(e)}
                                 type="submit"
-                                    className="clickable"
-                            >Submit</FormSubmitBtn>
+                                {...controller}
+                                className="clickable"
+                                >{controller.actionBtn_2.text}</FormSubmitBtn>
                         ) : 
                         <FormSubmitBtn
-                            type="submit"
                             className="noClick"
-                        >Submit</FormSubmitBtn>}
+                            {...controller}
+                            >{controller.actionBtn_2.text}</FormSubmitBtn>}
                     </ActionBtnHolder>
                     
                 </FormHolder>
