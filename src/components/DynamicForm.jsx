@@ -237,7 +237,7 @@ const DynamicForm = () => {
     const [state, dispatch] = useReducer(dynamicFormReducer, initState);
     const [currentRef, setCurrentRef] = useState(null);
     const [fillInputs, setfillInputs] = useState(false);
-    const [openForm, setOpenForm] = useState(true);
+    const [openForm, setOpenForm] = useState(false);
 
     const inputFields = {
         name: /^[a-z\d]{1,15}$/i,
@@ -341,7 +341,6 @@ const DynamicForm = () => {
         initFontColor: '#454745',
         onChange: dispatch,
         states: [{ stateName: 'name', labelName: 'Name *' }, { stateName: 'email', labelName: 'Email *' }, { stateName: 'age', labelName: 'Age *' }, { stateName: 'address', labelName: 'Address *' }],
-        banner: true,
         bannerText: 'Information',
         actionBtn_1: { text: 'Cancel', bgc: '#eb0505' },
         actionBtn_2: { text: 'Submit', bgc:'#0cc212'}
@@ -359,59 +358,61 @@ const DynamicForm = () => {
     return (
         <>
             <PageWrapper>
-                <FormOpener type="button" animate={openForm} onClick={() => setOpenForm(!openForm)}>OpenForm</FormOpener>
+                <FormOpener type="button" animate={openForm} 
+                    onClick={() => setOpenForm(!openForm)}
+                >OpenForm</FormOpener>
                 <BackgroundText>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facilis nisi quam quos quae, quaerat corporis nemo aut mollitia voluptas dolorum ullam quo, eum eligendi alias debitis illum dolores placeat atque culpa repellendus ea accusamus consequatur ipsam velit! Possimus labore velit consectetur? Ratione praesentium accusantium cum laudantium, nemo explicabo nulla quasi deleniti, ut modi, perspiciatis voluptas eaque at quia? Asperiores, obcaecati repellat consequatur, a laudantium officia corrupti, culpa tempora sapiente assumenda praesentium voluptatum dolorem sint debitis exercitationem sunt dolor nostrum enim. Dicta voluptatibus repellat facere, ex cumque eligendi dolorum facilis nobis fugit voluptates expedita consequuntur quod assumenda tempora dolores fuga rerum officia autem explicabo. Beatae dolorem eius incidunt omnis, nulla eveniet assumenda quae odit ad cumque voluptates perferendis ab, vitae ipsum consectetur provident vel fuga neque id minus pariatur deleniti. Tempora dolorum ratione ipsa hic expedita! Porro distinctio asperiores vel? Beatae adipisci numquam veritatis in sequi, laudantium porro similique illum sed iste fuga sint totam. Dicta, minus rerum quae culpa eos neque tempore veritatis, placeat aut, enim quos sint ut iusto perferendis. Nobis corporis quae doloremque eius qui distinctio repellat ipsa quas amet porro aliquid omnis fuga repudiandae magni debitis laudantium sapiente molestiae deleniti, quos in accusantium fugit. Sit officiis, tenetur optio blanditiis maxime ex commodi deleniti sint, nam atque minus rerum placeat ut natus, quia unde excepturi aperiam accusantium libero! Accusantium vero voluptatum similique porro, aspernatur asperiores? Consectetur asperiores quia perspiciatis voluptate nesciunt ex tenetur pariatur aperiam veritatis, distinctio enim omnis natus inventore sapiente. Id vitae consectetur accusamus dolor reprehenderit quaerat voluptatem, error vel enim quae ab. Delectus tempore labore neque dolore voluptas maxime est laborum. Illo maiores sapiente quibusdam dolorum. Aut ad doloremque fugit veritatis nostrum molestias molestiae rem a vel dolor, consequatur at corrupti unde in numquam error, nisi harum impedit atque ullam iure dolores sit optio debitis? Obcaecati soluta recusandae veritatis, quae sequi libero sit. Quaerat quia architecto voluptates illum ullam laboriosam maxime, ipsum, doloribus accusantium dolores quibusdam voluptas voluptatibus repellat. Fugit illum nemo incidunt eaque dolorum, iste libero placeat rem autem cupiditate ea voluptas delectus, corrupti dolorem error dolor nihil maiores sunt eveniet! Dolores esse vitae voluptates, rem quibusdam inventore corporis distinctio nulla odit alias, id quasi earum quos doloribus ullam repudiandae fugit aspernatur sequi necessitatibus consequatur magnam nostrum blanditiis illo. Voluptates voluptas consequuntur assumenda laboriosam. Commodi dolores minus dicta excepturi provident similique, at sint ipsam corrupti adipisci, consequuntur asperiores ducimus esse odit, odio eveniet laboriosam.</BackgroundText>
                 <BackgroundText>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consequuntur eos exercitationem aliquam. Debitis est similique veniam nobis ea eius impedit, ex consequatur eum assumenda odit et, ut quae facilis accusamus! Saepe maxime dignissimos sunt necessitatibus corporis. Qui facilis pariatur sequi quidem aperiam! Perspiciatis similique officiis dolore dolorem consequuntur unde eligendi, illum excepturi omnis quibusdam quas id repudiandae aperiam dolores architecto consectetur libero? Ipsum fuga numquam atque quod aliquid culpa esse obcaecati ab enim, suscipit, dolorem nostrum magnam vel laboriosam eos nemo similique voluptas, iste animi? Exercitationem vel rerum cupiditate numquam tempora, quaerat doloremque non culpa explicabo consequuntur nam amet tempore eos doloribus quisquam molestiae ipsum placeat sunt. Eligendi cupiditate modi ducimus dignissimos fugit. Illum, similique. Illum asperiores quisquam fugit excepturi doloremque, laborum aspernatur reprehenderit et neque! Placeat hic sapiente deserunt suscipit molestias porro, accusantium consequatur, eum quo facere delectus dolor aliquam accusamus aut sit illo! Iure nostrum repellendus assumenda possimus? Et ex soluta nisi rem ea consequuntur voluptate vitae fugiat veniam error asperiores doloremque, hic voluptates incidunt, repudiandae qui veritatis nam vero? Ea deserunt fuga, eos modi recusandae velit quia ducimus dolor, dolorem iste quaerat, ullam nam. Necessitatibus doloremque fuga, repudiandae vero quas aspernatur saepe atque doloribus accusantium placeat optio rerum. Aperiam totam labore aspernatur! Hic facilis quibusdam modi. Veniam ducimus voluptatum eum! Vel repellat facere, voluptatem totam nobis quo ratione. Dolores dolorem fugiat aspernatur illum quos! Hic reprehenderit quae beatae, inventore rerum accusamus odit nam porro debitis fuga cum ratione consectetur totam. Deleniti, in. Magnam qui commodi asperiores quidem aliquid praesentium eum necessitatibus a accusamus itaque illum placeat sit nam fugit neque temporibus quae deserunt laboriosam, corporis facere architecto quia? Eos debitis quaerat officia suscipit voluptates libero, repellendus amet earum quasi aliquid ipsa nihil laborum expedita, dolorem minima, est neque consequatur obcaecati quam provident. Consectetur, enim? Dolor, quas ab corrupti aut magni porro cum corporis nemo optio qui odit. Nihil mollitia tenetur saepe doloremque voluptates hic dolor facilis labore, delectus nulla non eum dicta id consequatur obcaecati veritatis praesentium animi aspernatur, voluptatum, modi autem sapiente illum sunt. Quam aspernatur nostrum quis hic et numquam explicabo tempora, incidunt optio quidem ex corporis sit, consectetur impedit repellendus delectus voluptatum nemo magni voluptatibus excepturi error unde reiciendis? Reprehenderit, dolore in libero quibusdam, optio pariatur velit repellat ullam nisi iusto magnam exercitationem beatae illo praesentium, soluta nostrum asperiores! Incidunt repellendus maiores eos deserunt unde laborum sit est eveniet sed officiis, a minima modi.</BackgroundText>
             </PageWrapper>
-        <Modal visible={openForm}>
-            <ButtonHolder>
-                <FillInputBtn onClick={() => insertCorrectInfo()}>Correct</FillInputBtn>
-                <FillInputBtn onClick={() => insertIncorrectInfo()}>Incorrect</FillInputBtn>
-            </ButtonHolder>
-            <FormMother>
-                    <FormHolder>
-                    {controller.banner && <Banner {...controller}>{controller.bannerText}</Banner>}
-                        {
-                            controller.states.map((el, i) => {
-                                return (
-                                    <LabelInputHolder>
-                                        <FocusEffectInput
-                                            stateName={el.stateName}
-                                            labelName={el.labelName}
-                                            stateValue={state[el.stateName]}
-                                            {...controller}
-                                            refCollector={(e) => refReceiver(e)}
-                                            attributeSetter={(e) => attributeSetter(e)}
-                                            validation={() => validateInput(state[el.stateName], inputFields[el.stateName], currentRef)}
-                                        />
-                                    </LabelInputHolder>
-                                )
-                            })
-                        }
-                    <ActionBtnHolder>
-                            <CancelButton
-                                type="submit"
-                                {...controller}
-                                onClick={() => setOpenForm(!openForm)}
-                                >{controller.actionBtn_1.text}</CancelButton>
-                        {validateForSubmit()  ? (
+            <Modal visible={openForm}>
+                <ButtonHolder>
+                    <FillInputBtn onClick={() => insertCorrectInfo()}>Correct</FillInputBtn>
+                    <FillInputBtn onClick={() => insertIncorrectInfo()}>Incorrect</FillInputBtn>
+                </ButtonHolder>
+                <FormMother>
+                        <FormHolder>
+                        {controller.bannerText && <Banner {...controller}>{controller.bannerText}</Banner>}
+                            {
+                                controller.states.map((el, i) => {
+                                    return (
+                                        <LabelInputHolder>
+                                            <FocusEffectInput
+                                                stateName={el.stateName}
+                                                labelName={el.labelName}
+                                                stateValue={state[el.stateName]}
+                                                {...controller}
+                                                refCollector={(e) => refReceiver(e)}
+                                                attributeSetter={(e) => attributeSetter(e)}
+                                                validation={() => validateInput(state[el.stateName], inputFields[el.stateName], currentRef)}
+                                            />
+                                        </LabelInputHolder>
+                                    )
+                                })
+                            }
+                        <ActionBtnHolder>
+                                <CancelButton
+                                    type="submit"
+                                    {...controller}
+                                    onClick={() => setOpenForm(!openForm)}
+                                    >{controller.actionBtn_1.text}</CancelButton>
+                            {validateForSubmit()  ? (
+                                <FormSubmitBtn
+                                    onClick={(e) => submitHandler(e)}
+                                    type="submit"
+                                    {...controller}
+                                    className="clickable"
+                                    >{controller.actionBtn_2.text}</FormSubmitBtn>
+                            ) : 
                             <FormSubmitBtn
-                                onClick={(e) => submitHandler(e)}
-                                type="submit"
+                                className="noClick"
                                 {...controller}
-                                className="clickable"
-                                >{controller.actionBtn_2.text}</FormSubmitBtn>
-                        ) : 
-                        <FormSubmitBtn
-                            className="noClick"
-                            {...controller}
-                            >{controller.actionBtn_2.text}</FormSubmitBtn>}
-                    </ActionBtnHolder>
-                    
-                </FormHolder>
-            </FormMother>
+                                >{controller.actionBtn_2.text}</FormSubmitBtn>}
+                        </ActionBtnHolder>
+                            
+                    </FormHolder>
+                </FormMother>
                 <LoggedInMessage visible={state.isLoggedIn}>{`welcome ${state.name} you have successfully logged in`}</LoggedInMessage>
-        </Modal>
+            </Modal>
         </>
     );
 };

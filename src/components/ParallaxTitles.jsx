@@ -1,5 +1,4 @@
 import React, { useRef, useState, useEffect } from 'react';
-import '../styles/Parallax.css'
 import styled from 'styled-components';
 import { flex, noSelect } from '../utils';
 import amsterdamPic from '../photos/amsterdam.jpeg'
@@ -9,6 +8,7 @@ import santoriniPic from '../photos/santorini.jpeg'
 import splitPic from '../photos/split.jpeg'
 import hamburger from '../icons/hamburger.svg'
 import cross from '../icons/cross.svg'
+import '../styles/parallax.css';
 
 const ArticleSection = styled.section`
     ${flex('center', 'center')}
@@ -169,7 +169,7 @@ const ParallaxTitles = () => {
                 return (
                     <ArticleSection ref={refs[i]}>
                         <ContentDiv>
-                            <ParallaxTitle bgcimg={photos[i]}>{el}</ParallaxTitle>
+                            <ParallaxTitle className="title" bgcimg={photos[i]}>{el}</ParallaxTitle>
                             <PlaceholderText>Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores quae, vel vitae rem nesciunt sit nulla fugit. Quibusdam delectus aut natus similique odit cupiditate, adipisci commodi asperiores sit consequatur quasi deleniti quisquam maiores eius voluptate et at quas dolorem. Maiores recusandae molestias earum, praesentium cupiditate amet obcaecati debitis non, natus autem soluta est adipisci, eaque quia animi. Odit, aut ducimus. Ratione nesciunt voluptates accusantium vero ad deserunt. Quae numquam magni voluptate fugit? Provident magnam harum nisi eligendi optio inventore libero, eum dignissimos illo corporis eaque, iusto pariatur ab odit quasi. Exercitationem maiores distinctio facere corporis. Facilis esse velit reprehenderit accusantium architecto ipsam eaque rem tempora quia, temporibus autem alias consequuntur eos explicabo totam consequatur placeat maxime soluta quam laborum repellat sint voluptas. In maiores eveniet culpa dolorem odio, temporibus veniam tempore voluptate fuga aperiam facilis quaerat ea accusamus enim, expedita quasi ullam voluptatem aliquid explicabo. Nulla officiis atque temporibus vitae quae aliquid perferendis odio dolore eligendi autem dignissimos omnis minima molestias quos hic, ad aliquam cum architecto consequuntur natus. Possimus provident esse pariatur totam voluptatum placeat deleniti, at nemo omnis sit dolores repellendus ipsa animi earum atque, vero modi dignissimos veritatis harum nostrum id aliquid porro. Officia officiis itaque similique!</PlaceholderText>
                             <ReadMoreBtn href="###">Read More</ReadMoreBtn>
                         </ContentDiv>

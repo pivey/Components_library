@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css?family=Archivo+Black&display=swap");
 
-* {
+h2.title {
   font-family: "Archivo Black", sans-serif;
   margin: 0;
   padding: 0;

@@ -12,6 +12,17 @@ export async function login({ username, password }) {
   });
 }
 
+const capitalize = (input) => {
+  if (typeof input !== 'string') return ''
+  return input.charAt(0).toUpperCase() + input.slice(1)
+}
+
+const ellipsis = css`
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+`;
+
 const flex = (justify, align, direction = 'row') => `
     display:flex;
     flex-direction:${direction};
@@ -30,4 +41,4 @@ const noSelect = css`
 
 const copyCat = state => JSON.parse(JSON.stringify(state));
 
-export { flex, noSelect, copyCat }
+export { flex, noSelect, copyCat, capitalize, ellipsis }
