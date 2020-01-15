@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { flex, capitalize, ellipsis } from '../utils';
+import { flex, capitalize } from '../utils';
 
 const PageWrapper = styled.div`
     ${flex('flex-start', 'center', 'column')}
@@ -21,25 +21,62 @@ const SearchInput = styled.input`
 `;
 
 const DrinksList = styled.ul`
-    width:auto;
+    ${flex('flex-start', 'center', 'column')}
+    width:30rem;
     height:auto;
-    overflow-x:scroll;
-    max-height:30rem;
+    max-height:40rem;
+    font-weight:bold;
+    font-size:1.5rem;
+    overflow-x: scroll;
+    padding:2.5rem 0rem 1rem 0rem;
+    margin:0rem;
+    border:2px dashed black;
 `;
 
 const DrinkItemLink = styled.a`
-    ${ellipsis}
     font-weight:bold;
     text-decoration:none;
     color:black;
-    font-size:1.5rem;
-    &:hover {
+    font-size:1.8rem;
+    display:inline-block;
+`;
+
+const DrinkListItem = styled.li`
+    height:auto;
+    width:auto;
+    display:block;
+    margin-bottom:.5rem;
+    &:hover ${DrinkItemLink} {
         color:blue;
         transition: 0.2s;
+        cursor:pointer;
     }
 `;
 
-function SearchCocktail(query) {
+const DrinkPic = styled.img`
+    width:12rem;
+    height:12rem;
+    &:hover ${DrinkItemLink}, && {
+        color:blue;
+        transition: 0.2s;
+        cursor:pointer;
+    }
+`;
+
+const DrinkHolder = styled.div`
+    ${flex('flex-start', 'center', 'column')}
+    width:auto;
+    height:auto;
+    margin-bottom:2rem;
+`;
+
+const UpdatePageTitle = title => {
+    useEffect(() => {
+        document.title = title;
+    }, [title]);
+}
+
+const SearchCocktail = query => {
     const [results, setResults] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -77,6 +114,11 @@ const AsyncHooks = () => {
     const [search, setSearch] = useState('');
     const [query, setQuery] = useState('');
     const [results, loading] = SearchCocktail(query);
+    const [selectedDrink, setSelectedDrink] = useState(null);
+
+    const title = selectedDrink ? `you're favourite cocktail is a ${selectedDrink}` : 'Components Library'
+
+    UpdatePageTitle(title);
 
     const submitHandler = (e) => {
         e.preventDefault();
@@ -99,21 +141,26 @@ const AsyncHooks = () => {
                     <button type="submit">Search</button>
                 </form>
                 <br></br>
-                {console.log(results)}
             </MotherHolder>
-            <DrinksList>
-                {loading ? <h2>Your drink is on it's way sir</h2>
-                    : results.map((el, i) => {
-                        return (
-                            <>
-                                <DrinkItemLink key={i} href={el.strDrinkThumb} target="_blank">{el.strDrink}</DrinkItemLink>
-                                <br></br>
-                                <br></br>
-                            </>
-                        )
-                    })}
-                
-            </DrinksList>
+            { results.length > 0 &&  
+                <DrinksList>
+                    {loading ? <h2>Your drink is on it's way sir</h2>
+                        : results.map((el, i) => {
+                            return (
+                                <DrinkHolder key={el.strDrink}>
+                                    <DrinkListItem key={i}>
+                                        <DrinkItemLink 
+                                            key={i} 
+                                            href={el.strDrinkThumb} 
+                                            target="_blank"
+                                            onClick={() => setSelectedDrink(el.strDrink)}
+                                            >{el.strDrink}</DrinkItemLink>
+                                    </DrinkListItem>
+                                    <DrinkPic key={i + 1} src={el.strDrinkThumb}/>
+                                </DrinkHolder>
+                            )
+                        })}
+                </DrinksList>}
         </PageWrapper>
     );
 };
