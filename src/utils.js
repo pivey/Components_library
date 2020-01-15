@@ -1,4 +1,5 @@
-import { css } from 'styled-components'
+import { css } from 'styled-components';
+import { useEffect, useState } from 'react';
 
 export async function login({ username, password }) {
   return new Promise((resolve, reject) => {
@@ -10,6 +11,33 @@ export async function login({ username, password }) {
       }
     }, 1000);
   });
+}
+
+const UpdatePageTitle = title => {
+    useEffect(() => {
+        document.title = title;
+    }, [title]);
+}
+
+const SaveToLocalStorage = (key, defaultValue) => {
+    const [storage, setStorage] = useState(() => {
+        let value; 
+        try {
+            value = JSON.parse(
+                window.localStorage.getItem(key) || String(defaultValue)
+            )
+        } catch (e) {
+            value = defaultValue;
+        }
+    
+        return value;
+    });
+
+    useEffect(() => {
+        window.localStorage.setItem(key, storage);
+    }, [key, storage])
+
+    return [storage, setStorage];
 }
 
 const capitalize = (input) => {
@@ -41,4 +69,4 @@ const noSelect = css`
 
 const copyCat = state => JSON.parse(JSON.stringify(state));
 
-export { flex, noSelect, copyCat, capitalize, ellipsis }
+export { flex, noSelect, copyCat, capitalize, ellipsis, UpdatePageTitle, SaveToLocalStorage }

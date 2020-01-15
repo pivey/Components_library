@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
-import { flex, capitalize } from '../utils';
+import { flex, capitalize, UpdatePageTitle, SaveToLocalStorage } from '../utils';
+import PiveyPops from './PiveyPops';
 
 const PageWrapper = styled.div`
     ${flex('flex-start', 'center', 'column')}
@@ -34,11 +35,13 @@ const DrinksList = styled.ul`
 `;
 
 const DrinkItemLink = styled.a`
+    max-width:20rem;
     font-weight:bold;
     text-decoration:none;
     color:black;
     font-size:1.8rem;
     display:inline-block;
+    text-align:center;
 `;
 
 const DrinkListItem = styled.li`
@@ -70,13 +73,7 @@ const DrinkHolder = styled.div`
     margin-bottom:2rem;
 `;
 
-const UpdatePageTitle = title => {
-    useEffect(() => {
-        document.title = title;
-    }, [title]);
-}
-
-const SearchCocktail = query => {
+const SearchCocktail = (query, openPopUp) => {
     const [results, setResults] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -98,14 +95,19 @@ const SearchCocktail = query => {
                     })
                 )
             } catch (error) {
-                if (error) console.log('Sorry, there were no drinks containing that ingredient');
+                openPopUp({
+                    open: true,
+                    title: "Not Found",
+                    text: `Sorry, could not find any drinks containing ${query}`
+                })
+                    console.log('error while finding your drink');
             } finally {
                 setLoading(false);
             }
         }
         query !== '' && fetchData();
 
-    }, [query])
+    }, [openPopUp, query])
 
     return [results, loading];
 }
@@ -113,8 +115,39 @@ const SearchCocktail = query => {
 const AsyncHooks = () => {
     const [search, setSearch] = useState('');
     const [query, setQuery] = useState('');
-    const [results, loading] = SearchCocktail(query);
     const [selectedDrink, setSelectedDrink] = useState(null);
+    const [count, setCount] = SaveToLocalStorage('button-count', 0);
+    const [popUp, setPopUp] = useState({
+        open: false,
+        title: '',
+        text: ''
+    });
+    const [results, loading] = SearchCocktail(query, setPopUp);
+    const closePopUp = e => {
+        setPopUp({
+            ...popUp,
+            open: e
+        });
+    };
+
+    const props = {
+        titleFontSize: "1.2rem",
+        messageFontSize: "0.8rem",
+        motherPadding: "1rem",
+        titlePadding: "0.5rem 0.5rem",
+        messagePadding: "0.5rem",
+        maxW: "15rem",
+        modalBGC: "rgba(0, 0, 0, 0.6)",
+        popUpBGC: "#e1e5e8",
+        motherRadius: "10px",
+        btns: 1,
+        hoverBGC: "darkGrey",
+        hoverTxtColor: "purple",
+        closePopUp: closePopUp,
+        open: popUp.open,
+        title: popUp.title,
+        text: popUp.text
+    };
 
     const title = selectedDrink ? `you're favourite cocktail is a ${selectedDrink}` : 'Components Library'
 
@@ -127,7 +160,9 @@ const AsyncHooks = () => {
     }
 
     return (
+        
         <PageWrapper>
+            { !loading && <PiveyPops {...props} />}
             <MotherHolder>
                 <h2>Async React hooks</h2>
                 <form onSubmit={submitHandler}>
@@ -139,6 +174,11 @@ const AsyncHooks = () => {
                     >
                     </SearchInput>
                     <button type="submit">Search</button>
+                    <button 
+                        type="button"
+                        onClick={() => setCount(count + 1)} 
+                        onDoubleClick={() => setCount(0)}
+                    >{count}</button>
                 </form>
                 <br></br>
             </MotherHolder>
@@ -156,7 +196,15 @@ const AsyncHooks = () => {
                                             onClick={() => setSelectedDrink(el.strDrink)}
                                             >{el.strDrink}</DrinkItemLink>
                                     </DrinkListItem>
-                                    <DrinkPic key={i + 1} src={el.strDrinkThumb}/>
+                                    <DrinkItemLink 
+                                    href={el.strDrinkThumb}
+                                    target="_blank">
+                                        <DrinkPic 
+                                        key={i + 1} 
+                                        src={el.strDrinkThumb}
+                                        onClick={() => setSelectedDrink(el.strDrink)}
+                                        />
+                                    </DrinkItemLink>
                                 </DrinkHolder>
                             )
                         })}
