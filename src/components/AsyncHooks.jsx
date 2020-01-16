@@ -159,6 +159,33 @@ const AsyncHooks = () => {
         setSearch('');
     }
 
+    const CountButton = React.memo(function CountButton({ onClick, count }) {
+        return <button type="button" onClick={onClick}>{count}</button>
+    }, [])
+
+    function DualCounter() {
+        const [count1, setCount1] = useState(0);
+        const [count2, setCount2] = useState(0);
+        const increment1 = useCallback(() => setCount1(c => c + 1), []);
+        const increment2 = useCallback(() => setCount2(c => c + 1), []);
+        console.log({count1}, {count2});
+        return (
+            <>
+                <CountButton count={count1} onClick={increment1} />
+                <CountButton count={count2} onClick={increment2} />
+            </>
+        )
+    }
+
+    const Counter = React.memo(({ increment }) => {
+        return <button onClick={increment}>Click Me</button>
+    })
+
+    const increment = useCallback(() => {
+        setCount(c => c + 1)
+    }, [setCount])
+
+
     return (
         
         <PageWrapper>
@@ -174,11 +201,14 @@ const AsyncHooks = () => {
                     >
                     </SearchInput>
                     <button type="submit">Search</button>
-                    <button 
+                    {/* <button 
                         type="button"
-                        onClick={() => setCount(count + 1)} 
+                        onClick={() => setCount( c => c + 1)} 
                         onDoubleClick={() => setCount(0)}
-                    >{count}</button>
+                    >{count}</button> */}
+                    {/* {DualCounter()} */}
+                    <Counter increment={increment}/>
+                <div>count: {count}</div>
                 </form>
                 <br></br>
             </MotherHolder>
