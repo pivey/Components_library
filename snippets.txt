@@ -1,5 +1,5 @@
 ! 1
-* a way of organising props
+? a way of organising props
 export const sizeProps = props => css`
   ${props.width && `width: ${props.width}`};
   ${props.height && `height: ${props.height}`};
@@ -19,9 +19,8 @@ const controller = {
   .... whatever
 }
 
-* how to properly set default values when deconstructing objects
-
+? how to properly set default values when deconstructing objects
 const {controller: { bgc: { text }} = { bgc: { text: 'aufvidasan'}}} = controller;
 
 !3
-* 
+? Promises vs Async await. 
